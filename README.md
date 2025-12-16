@@ -182,7 +182,8 @@ yarn build
 
 ### Backend
 - **Ruby on Rails** 7.2.2
-- **SQLite3** (Development/Production)
+- **PostgreSQL** (Production)
+- **SQLite3** (Development)
 - **Devise** (Authentication)
 - **HTTParty** (API requests)
 
@@ -296,8 +297,7 @@ git push
 
 **Database errors:**
 - Railway automatically provides a PostgreSQL database
-- If using SQLite, it will work but data won't persist between deployments
-- For production, consider switching to PostgreSQL
+- This app is configured to use PostgreSQL in production for reliability
 
 **Assets not loading:**
 - Ensure `RAILS_SERVE_STATIC_FILES=true` is set in environment variables
