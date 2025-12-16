@@ -1,1 +1,1 @@
-web: bin/rails db:migrate && bin/rails server -b 0.0.0.0 -p ${PORT:-3000}
+web: bin/rails db:schema:load && bin/rails server -b 0.0.0.0 -p ${PORT:-3000}
