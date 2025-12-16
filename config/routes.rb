@@ -4,12 +4,12 @@ Rails.application.routes.draw do
   resources :posts
   resources :transactions
   devise_for :users
-  
+
   # AI Commands
   get "ai_commands", to: "ai_commands#index"
   post "ai_commands", to: "ai_commands#create"
   delete "ai_commands", to: "ai_commands#destroy"
-  
+
   # Define your application routes per the DSL in https://guides.rubylangs.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

@@ -8,31 +8,31 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :todos, dependent: :destroy
   has_many :chat_messages, dependent: :destroy
-  
+
   MAX_AI_TOKENS = 10
   TOKEN_RESET_HOURS = 5
-  
+
   def ai_tokens_remaining
     reset_tokens_if_needed
     MAX_AI_TOKENS - (ai_tokens_used || 0)
   end
-  
+
   def can_use_ai_token?
     ai_tokens_remaining > 0
   end
-  
+
   def use_ai_token!
     reset_tokens_if_needed
     increment!(:ai_tokens_used)
   end
-  
+
   def next_token_reset_time
     return Time.current + TOKEN_RESET_HOURS.hours if ai_tokens_reset_at.nil?
     ai_tokens_reset_at
   end
-  
+
   private
-  
+
   def reset_tokens_if_needed
     if ai_tokens_reset_at.nil? || Time.current >= ai_tokens_reset_at
       update_columns(

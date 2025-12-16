@@ -5,30 +5,30 @@ class TransactionsController < ApplicationController
   # GET /transactions or /transactions.json
   def index
     # Get filter parameters
-    @view_mode = params[:view_mode] || 'daily'
+    @view_mode = params[:view_mode] || "daily"
     @selected_date = params[:date] ? Date.parse(params[:date]) : Date.today
-    
+
     # Calculate date range based on view mode
     case @view_mode
-    when 'monthly'
+    when "monthly"
       start_date = @selected_date.beginning_of_month
       end_date = @selected_date.end_of_month
-    when 'yearly'
+    when "yearly"
       start_date = @selected_date.beginning_of_year
       end_date = @selected_date.end_of_year
     else # daily
       start_date = @selected_date
       end_date = @selected_date
     end
-    
+
     # Filter transactions by date range
     @transactions = current_user.transactions
                                  .where(date: start_date..end_date)
                                  .order(date: :desc, created_at: :desc)
-    
+
     # Calculate summary statistics
-    @total_income = @transactions.where("LOWER(kind) = ?", 'income').sum(:amount)
-    @total_expense = @transactions.where("LOWER(kind) != ?", 'income').sum(:amount)
+    @total_income = @transactions.where("LOWER(kind) = ?", "income").sum(:amount)
+    @total_expense = @transactions.where("LOWER(kind) != ?", "income").sum(:amount)
     @net = @total_income - @total_expense
   end
 
