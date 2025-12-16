@@ -255,7 +255,7 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 👨‍💻 Author
 
 **Your Name**
-- GitHub: [@YOUR_USERNAME](https://github.com/YOUR_USERNAME)
+- GitHub: [@Chawn](https://github.com/Chawn/)
 
 ## 🙏 Acknowledgments
 
