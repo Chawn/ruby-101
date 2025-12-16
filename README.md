@@ -224,6 +224,85 @@ ruby-101/
 |----------|----------|-------------|
 | `GEMINI_API_KEY` | Yes | Google Gemini API key for AI features |
 
+## 🚂 Deployment to Railway
+
+### Prerequisites
+- Railway account ([Sign up here](https://railway.app/))
+- GitHub repository with your code
+
+### Step 1: Generate Secret Key Base
+
+Run this command locally to generate a secret key:
+
+```bash
+rails secret
+```
+
+Copy the generated key (you'll need it in Step 3).
+
+### Step 2: Create New Project on Railway
+
+1. Go to [Railway Dashboard](https://railway.app/dashboard)
+2. Click "New Project"
+3. Select "Deploy from GitHub repo"
+4. Choose your `ruby-101` repository
+5. Railway will auto-detect it's a Rails app
+
+### Step 3: Add Environment Variables
+
+In your Railway project dashboard, go to **Variables** tab and add:
+
+| Variable | Value | Required |
+|----------|-------|----------|
+| `SECRET_KEY_BASE` | [Your generated secret from Step 1] | ✅ Yes |
+| `RAILS_ENV` | `production` | ✅ Yes |
+| `GEMINI_API_KEY` | [Your Gemini API key] | ✅ Yes |
+| `RAILS_SERVE_STATIC_FILES` | `true` | ✅ Yes |
+
+### Step 4: Deploy
+
+1. Railway will automatically deploy when you push to your main branch
+2. Wait for build to complete (usually 2-5 minutes)
+3. Click on your deployment URL to access your app
+
+### Step 5: Run Database Migrations
+
+After first deployment, run migrations:
+
+1. Go to your Railway project
+2. Open the **Deployments** tab
+3. Click on the latest deployment
+4. Open the **Shell** tab
+5. Run:
+```bash
+rails db:migrate
+```
+
+### Custom Domain (Optional)
+
+1. Go to **Settings** tab in Railway
+2. Click **Generate Domain** for a free `.up.railway.app` domain
+3. Or add your custom domain
+
+### Troubleshooting Railway Deployment
+
+**Build fails with missing gems:**
+```bash
+# Make sure your Gemfile.lock is committed
+git add Gemfile.lock
+git commit -m "Add Gemfile.lock"
+git push
+```
+
+**Database errors:**
+- Railway automatically provides a PostgreSQL database
+- If using SQLite, it will work but data won't persist between deployments
+- For production, consider switching to PostgreSQL
+
+**Assets not loading:**
+- Ensure `RAILS_SERVE_STATIC_FILES=true` is set in environment variables
+- Check that `config/environments/production.rb` has `config.public_file_server.enabled = true`
+
 ## 🐛 Troubleshooting
 
 ### AI features not working
