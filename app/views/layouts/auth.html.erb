@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ruby 101 - Login</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-base-300 min-h-screen flex items-center justify-center" data-controller="theme">
+    
+    <div class="w-full max-w-md p-6">
+        <% flash.each do |key, value| %>
+             <div class="alert alert-<%= key == 'notice' ? 'info' : 'error' %> mb-4 shadow-lg text-sm">
+                <span><%= value %></span>
+             </div>
+        <% end %>
+
+        <%= yield %>
+    </div>
+
+  </body>
+</html>

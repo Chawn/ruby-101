@@ -1,0 +1,131 @@
+<div class="drawer drawer-end" data-controller="ai-chat">
+  <input id="ai-drawer" type="checkbox" class="drawer-toggle" />
+  
+  <!-- Floating Action Button -->
+  <div class="fixed bottom-6 right-6 z-40">
+    <label for="ai-drawer" class="btn btn-circle btn-primary shadow-lg transition-transform duration-300 hover:scale-125 cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+      </svg>
+    </label>
+  </div>
+  
+  <!-- Drawer Sidebar -->
+  <div class="drawer-side z-50">
+    <label for="ai-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+    
+    <div class="w-96 h-screen bg-base-300 flex flex-col">
+      <!-- Header - Sticky -->
+      <div class="navbar bg-primary text-primary-content flex justify-between sticky top-0 z-10">
+        <div class="flex-1">
+          <span class="text-md font-bold">🤖 AI Assistant</span>
+          <span class="text-xs opacity-75 pl-3">(Free Token <span id="ai-token-display">0/10</span>)</span>
+        </div>
+        <div class="flex-none gap-2">
+          <!-- Dropdown Menu -->
+          <details class="dropdown dropdown-end" tabindex="0">
+            <summary class="btn btn-ghost btn-circle">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+              </svg>
+            </summary>
+            <ul class="menu dropdown-content z-[1] p-2 shadow-xl bg-base-100 text-base-content rounded-box w-64 mt-2 border-2 border-base-300" tabindex="0">
+              <li>
+                <a data-action="click->ai-chat#showExamples" class="font-medium" onclick="this.closest('details').removeAttribute('open')">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                  </svg>
+                  Show Examples
+                </a>
+              </li>
+              <li>
+                <a data-action="click->ai-chat#confirmClearHistory" class="text-error font-medium" onclick="this.closest('details').removeAttribute('open')">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                  </svg>
+                  Clear Chat History
+                </a>
+              </li>
+            </ul>
+          </details>
+          
+          <!-- Close Button -->
+          <label for="ai-drawer" class="btn btn-ghost btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Messages Area - Scrollable -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-4" data-ai-chat-target="messages">
+        <!-- Welcome Message -->
+        <div class="chat chat-start">
+          <div class="text-sm opacity-90">
+            Hi! I'm your AI Assistant. I can help you quickly log transactions, todos, and posts.<br><br>
+            <strong>Examples:</strong><br>
+            • "Income 1000 baht from noodle sales"<br>
+            • "Add todo: Finish project report"<br>
+            • "Create post: My first blog entry"
+          </div>
+        </div>
+      </div>
+      
+      <!-- Shortcut Buttons -->
+      <div class="p-4 border-t border-base-300">
+        <div class="grid grid-cols-2 gap-2 mb-3">
+          <button class="btn btn-sm btn-outline" data-action="click->ai-chat#fillInput" data-text="Income ">
+            💰 Add Income
+          </button>
+          <button class="btn btn-sm btn-outline" data-action="click->ai-chat#fillInput" data-text="Expense ">
+            💸 Add Expense
+          </button>
+          <button class="btn btn-sm btn-outline" data-action="click->ai-chat#fillInput" data-text="Add todo: ">
+            ✅ Add Todo
+          </button>
+          <button class="btn btn-sm btn-outline" data-action="click->ai-chat#fillInput" data-text="Create post: ">
+            📝 Create Post
+          </button>
+        </div>
+      </div>
+      
+      <!-- Input Area - Sticky -->
+      <div class="px-4 pb-4 sticky bottom-0 bg-base-200">
+        <form data-ai-chat-target="form" data-action="submit->ai-chat#send">
+          <div class="join w-full">
+            <input 
+              type="text" 
+              data-ai-chat-target="input"
+              placeholder="Type your command..."
+              class="input input-bordered join-item flex-1"
+              required
+            />
+            <button type="submit" class="btn btn-primary join-item">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<dialog id="clear-history-modal" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">⚠️ Clear Chat History</h3>
+    <p class="py-4">Are you sure you want to delete all chat history? This action cannot be undone.</p>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-ghost">Cancel</button>
+      </form>
+      <button class="btn btn-error" onclick="document.getElementById('clear-history-modal').close(); window.aiChatController?.clearHistory();">Delete All</button>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

@@ -1,0 +1,57 @@
+<% content_for :title, "Transaction Details" %>
+
+<div class="w-full max-w-2xl mx-auto">
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title text-3xl font-bold mb-6">Transaction Details</h2>
+      
+      <div class="space-y-4">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">Title</span>
+          </label>
+          <div class="text-lg"><%= @transaction.title %></div>
+        </div>
+
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">Amount</span>
+          </label>
+          <div class="text-2xl font-mono font-bold <%= @transaction.kind.downcase == 'income' ? 'text-success' : 'text-error' %>">
+            <%= number_to_currency(@transaction.amount, unit: "฿") %>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">Type</span>
+          </label>
+          <div>
+            <% if @transaction.kind.downcase == 'income' %>
+              <span class="badge badge-success gap-2">Income</span>
+            <% else %>
+              <span class="badge badge-error gap-2">Expense</span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">Date</span>
+          </label>
+          <div class="text-lg"><%= @transaction.date&.strftime("%d %B %Y") %></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      
+      <div class="flex justify-between gap-2">
+        <%= link_to "Edit", edit_transaction_path(@transaction), class: "btn btn-primary" %>
+        <div class="flex gap-2">
+          <%= link_to "Back to list", transactions_path, class: "btn btn-ghost" %>
+          <%= button_to "Delete", @transaction, method: :delete, class: "btn btn-error", data: { controller: "confirm", action: "click->confirm#delete" } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

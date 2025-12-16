@@ -1,0 +1,139 @@
+<% if user_signed_in? %>
+  <div class="space-y-8 pb-20">
+    <!-- AI Assistant Input -->
+    <div class="hero bg-gradient-to-r from-primary/10 to-secondary/10 rounded-box py-12" data-controller="typing">
+      <div class="hero-content text-center w-full max-w-3xl">
+        <div class="w-full">
+          <h1 class="text-5xl font-bold mb-2 flex items-center justify-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-primary">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+            </svg>
+            AI Assistant
+          </h1>
+          <p class="text-sm opacity-70 mb-6">Ask me anything or try one of the examples below</p>
+          
+          <div class="relative">
+            <input 
+              type="text" 
+              data-typing-target="input"
+              data-action="click->typing#openChat"
+              class="input input-bordered input-lg w-full text-center cursor-pointer hover:border-primary transition-all shadow-lg"
+              readonly
+            >
+            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-primary animate-pulse">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          
+          <p class="text-xs mt-4 opacity-60">
+            <span class="font-semibold"><%= current_user.email %></span> • Click to start chatting
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats stats-vertical lg:stats-horizontal shadow w-full bg-base-100 border border-base-300">
+      
+      <div class="stat">
+        <div class="stat-figure text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <div class="stat-title">Total Balance</div>
+        <div class="stat-value <%= @balance >= 0 ? 'text-success' : 'text-error' %>">
+            <%= number_to_currency(@balance, unit: "฿") %>
+        </div>
+        <div class="stat-desc">Income - Expenses</div>
+      </div>
+      
+      <div class="stat">
+        <div class="stat-figure text-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+        </div>
+        <div class="stat-title">Pending Tasks</div>
+        <div class="stat-value text-secondary"><%= @pending_todos_count %></div>
+        <div class="stat-desc">Tasks to complete</div>
+      </div>
+      
+      <div class="stat">
+         <div class="stat-figure text-accent">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+         </div>
+        <div class="stat-title">Recent Posts</div>
+        <div class="stat-value"><%= @recent_posts.count %></div>
+        <div class="stat-desc">This session</div>
+      </div>
+      
+    </div>
+
+    <!-- Quick Links -->
+    <h2 class="text-2xl font-bold mt-4">Quick Access</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <%= link_to transactions_path, class: "card bg-base-100 shadow-xl border border-base-300 hover:border-primary transition-all cursor-pointer" do %>
+            <div class="card-body items-center text-center">
+                <h2 class="card-title text-3xl">💰</h2>
+                <p class="font-bold">Transactions</p>
+                <div class="card-actions">
+                    <button class="btn btn-sm btn-primary">Manage Money</button>
+                </div>
+            </div>
+        <% end %>
+
+        <%= link_to todos_path, class: "card bg-base-100 shadow-xl border border-base-300 hover:border-secondary transition-all cursor-pointer" do %>
+            <div class="card-body items-center text-center">
+                <h2 class="card-title text-3xl">✅</h2>
+                <p class="font-bold">To-Do List</p>
+                <div class="card-actions">
+                    <button class="btn btn-sm btn-secondary">Get Things Done</button>
+                </div>
+            </div>
+        <% end %>
+
+        <%= link_to posts_path, class: "card bg-base-100 shadow-xl border border-base-300 hover:border-accent transition-all cursor-pointer" do %>
+            <div class="card-body items-center text-center">
+                <h2 class="card-title text-3xl">📝</h2>
+                <p class="font-bold">Blog</p>
+                <div class="card-actions">
+                    <button class="btn btn-sm btn-accent">Write Story</button>
+                </div>
+            </div>
+        <% end %>
+
+    </div>
+
+    <!-- Recent Posts -->
+    <% if @recent_posts.any? %>
+        <h2 class="text-2xl font-bold mt-4">Recent Posts</h2>
+        <div class="space-y-4">
+            <% @recent_posts.each do |post| %>
+                <div class="alert shadow-lg bg-base-100 border border-base-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div>
+                        <h3 class="font-bold"><%= post.title %></h3>
+                        <div class="text-xs text-base-content/60"><%= time_ago_in_words(post.created_at) %> ago</div>
+                    </div>
+                    <%= link_to "Read", post, class: "btn btn-sm btn-ghost" %>
+                </div>
+            <% end %>
+        </div>
+    <% end %>
+
+  </div>
+<% else %>
+  <!-- Guest View -->
+  <div class="hero min-h-[60vh] bg-base-200 rounded-box">
+    <div class="hero-content text-center">
+      <div class="max-w-md">
+        <h1 class="text-5xl font-bold">Ruby 101 App</h1>
+        <p class="py-6">The all-in-one platform for managing your money, tasks, and ideas.</p>
+        <div class="flex gap-4 justify-center">
+            <%= link_to "Sign In", new_user_session_path, class: "btn btn-primary" %>
+            <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-outline" %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

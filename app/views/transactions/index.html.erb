@@ -1,0 +1,160 @@
+<div class="w-full">
+  <div class="flex justify-between items-center mb-6" data-controller="search">
+    <div class="flex items-center gap-3">
+      <!-- Title (always visible) -->
+      <h1 class="font-bold text-4xl" data-search-target="title">Transactions</h1>
+      
+      <!-- Search Icon Button (shown by default) -->
+      <button class="btn btn-circle btn-ghost btn-sm" data-search-target="searchIcon" data-action="click->search#toggleSearch">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        </svg>
+      </button>
+      
+      <!-- Search Input (hidden by default, replaces icon) -->
+      <div class="hidden" data-search-target="searchInput">
+        <div class="join shadow-lg">
+          <input 
+            type="text" 
+            placeholder="Search..." 
+            class="input input-bordered input-sm join-item w-48"
+            data-action="input->search#search"
+          >
+          <button class="btn btn-sm join-item" data-action="click->search#closeSearch">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <%= link_to "New Transaction", new_transaction_path, class: "btn btn-primary" %>
+  </div>
+
+  <!-- Date Filter Controls -->
+  <div class="flex items-center gap-3 mb-4 bg-base-100 p-4 rounded-box shadow border border-base-300" data-controller="date-filter">
+    <button class="btn btn-sm" data-action="click->date-filter#goToToday">
+      วันนี้
+    </button>
+    <button class="btn btn-sm btn-square" data-action="click->date-filter#previousPeriod">
+      &lt;
+    </button>
+    <button class="btn btn-sm btn-square" data-action="click->date-filter#nextPeriod">
+      &gt;
+    </button>
+    
+    <% 
+      current_year = Date.today.year
+      min_year = current_year - 70
+      
+      case @view_mode
+      when 'monthly'
+        input_type = 'month'
+        input_value = @selected_date.strftime('%Y-%m')
+      when 'yearly'
+        input_type = 'number'
+        input_value = @selected_date.year
+      else
+        input_type = 'date'
+        input_value = @selected_date.strftime('%Y-%m-%d')
+      end
+    %>
+    
+    <% if @view_mode == 'yearly' %>
+      <input 
+        type="number" 
+        class="input input-sm input-bordered w-24" 
+        data-date-filter-target="dateInput"
+        data-action="change->date-filter#changeDate"
+        value="<%= @selected_date.year %>"
+        min="<%= min_year %>"
+        max="<%= current_year %>"
+        placeholder="ปี"
+      >
+    <% else %>
+      <input 
+        type="<%= input_type %>" 
+        class="input input-sm input-bordered" 
+        data-date-filter-target="dateInput"
+        data-action="change->date-filter#changeDate"
+        value="<%= input_value %>"
+      >
+    <% end %>
+    
+    <select 
+      class="select select-sm select-bordered" 
+      data-date-filter-target="viewMode"
+      data-action="change->date-filter#changeViewMode"
+    >
+      <option value="daily" <%= 'selected' if @view_mode == 'daily' %>>รายวัน</option>
+      <option value="monthly" <%= 'selected' if @view_mode == 'monthly' %>>รายเดือน</option>
+      <option value="yearly" <%= 'selected' if @view_mode == 'yearly' %>>รายปี</option>
+    </select>
+  </div>
+
+  <div class="overflow-x-auto bg-base-100 rounded-box shadow-xl border border-base-300">
+    <table class="table table-zebra w-full">
+      <!-- head -->
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Title</th>
+          <th>Kind</th>
+          <th class="text-right">Amount</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transactions.each do |transaction| %>
+          <tr>
+            <td><%= transaction.date&.strftime("%d %b %Y") %></td>
+            <td class="font-bold"><%= transaction.title %></td>
+            <td>
+                <% if transaction.kind.downcase == 'income' %>
+                    <span class="badge badge-success gap-2">Income</span>
+                <% else %>
+                    <span class="badge badge-error gap-2">Expense</span>
+                <% end %>
+            </td>
+            <td class="text-right font-mono text-lg <%= transaction.kind.downcase == 'income' ? 'text-success' : 'text-error' %>">
+                <%= number_to_currency(transaction.amount, unit: "฿") %>
+            </td>
+            <td class="flex justify-center gap-2">
+                <%= link_to "Edit", edit_transaction_path(transaction), class: "btn btn-xs btn-ghost" %>
+                <%= button_to "Delete", transaction, method: :delete, class: "btn btn-xs btn-error btn-outline", data: { controller: "confirm", action: "click->confirm#delete" } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+    <% if @transactions.empty? %>
+        <div class="p-10 text-center text-gray-500">
+            No transactions found. Start by creating one!
+        </div>
+    <% end %>
+  </div>
+
+  <!-- Summary Statistics -->
+  <div class="stats shadow mt-6 w-full">
+    <div class="stat">
+      <div class="stat-title">Total Income</div>
+      <div class="stat-value text-success"><%= number_to_currency(@total_income, unit: "฿") %></div>
+      <div class="stat-desc">รายรับทั้งหมด</div>
+    </div>
+    
+    <div class="stat">
+      <div class="stat-title">Total Expense</div>
+      <div class="stat-value text-error"><%= number_to_currency(@total_expense, unit: "฿") %></div>
+      <div class="stat-desc">รายจ่ายทั้งหมด</div>
+    </div>
+    
+    <div class="stat">
+      <div class="stat-title">Net</div>
+      <div class="stat-value <%= @net >= 0 ? 'text-success' : 'text-error' %>">
+        <%= number_to_currency(@net, unit: "฿") %>
+      </div>
+      <div class="stat-desc">คงเหลือสุทธิ</div>
+    </div>
+  </div>
+</div>

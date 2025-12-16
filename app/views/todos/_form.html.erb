@@ -1,0 +1,35 @@
+<%= form_with(model: todo, class: "space-y-6") do |form| %>
+  <% if todo.errors.any? %>
+    <div class="alert alert-error">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+      <div>
+        <h3 class="font-bold"><%= pluralize(todo.errors.count, "error") %> prohibited this from being saved:</h3>
+        <ul class="list-disc list-inside">
+          <% todo.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-control w-full">
+    <%= form.label :title, class: "label" do %>
+      <span class="label-text font-semibold">Task Title</span>
+    <% end %>
+    <%= form.text_field :title, class: "input input-bordered w-full", placeholder: "e.g., Complete project presentation" %>
+  </div>
+
+  <div class="form-control w-full">
+    <%= form.label :status, class: "label" do %>
+      <span class="label-text font-semibold">Status</span>
+    <% end %>
+    <%= form.select :status, [['Pending', 'pending'], ['Completed', 'completed']], {}, class: "select select-bordered w-full" %>
+  </div>
+
+  <%= form.hidden_field :user_id %>
+
+  <div class="form-control mt-8">
+    <%= form.submit class: "btn btn-primary w-full" %>
+  </div>
+<% end %>

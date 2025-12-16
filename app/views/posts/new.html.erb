@@ -1,0 +1,17 @@
+<% content_for :title, "New Post" %>
+
+<div class="w-full max-w-2xl mx-auto">
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title text-3xl font-bold mb-6">New Blog Post</h2>
+      
+      <%= render "form", post: @post %>
+      
+      <div class="divider"></div>
+      
+      <div class="flex justify-end">
+        <%= link_to "Back to list", posts_path, class: "btn btn-ghost" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<% content_for :title, "Edit Transaction" %>
+
+<div class="w-full max-w-2xl mx-auto">
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title text-3xl font-bold mb-6">Edit Transaction</h2>
+      
+      <%= render "form", transaction: @transaction %>
+      
+      <div class="divider"></div>
+      
+      <div class="flex justify-between">
+        <%= link_to "View", @transaction, class: "btn btn-ghost" %>
+        <%= link_to "Back to list", transactions_path, class: "btn btn-ghost" %>
+      </div>
+    </div>
+  </div>
+</div>

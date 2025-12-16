@@ -1,0 +1,8 @@
+
+one:
+  email: one@example.com
+  encrypted_password: <%= User.new(password: 'password').encrypted_password %>
+
+two:
+  email: two@example.com
+  encrypted_password: <%= User.new(password: 'password').encrypted_password %>
