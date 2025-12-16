@@ -72,3 +72,5 @@ gem "tailwindcss-rails", "~> 4.4"
 # AI Integration
 gem "dotenv-rails", groups: [:development, :test]
 gem "httparty"
+
+gem "pg", "~> 1.6"

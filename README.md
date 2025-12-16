@@ -265,9 +265,17 @@ In your Railway project dashboard, go to **Variables** tab and add:
 2. Wait for build to complete (usually 2-5 minutes)
 3. Click on your deployment URL to access your app
 
-### Step 5: Run Database Migrations
+### Step 5: Add Database (Important)
 
-After first deployment, run migrations:
+1. In Railway project view, right click on empty space
+2. Select **Database** -> **PostgreSQL**
+3. This will create a database and automatically link `DATABASE_URL` to your app
+4. wait for the database to deploy (green checkmark)
+5. **Redeploy your app** using the new environment
+
+### Step 6: Run Database Migrations
+
+After the app is redeployed with the database:
 
 1. Go to your Railway project
 2. Open the **Deployments** tab
