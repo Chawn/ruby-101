@@ -273,18 +273,10 @@ In your Railway project dashboard, go to **Variables** tab and add:
 4. wait for the database to deploy (green checkmark)
 5. **Redeploy your app** using the new environment
 
-### Step 6: Run Database Migrations
+### Step 6: Database Migrations (Automatic)
 
-After the app is redeployed with the database:
-
-1. Go to your Railway project
-2. Open the **Deployments** tab
-3. Click on the latest deployment
-4. Open the **Shell** tab
-5. Run:
-```bash
-rails db:migrate
-```
+Since we updated the Start Command, migrations will run automatically on every deploy!
+You don't need to manually run `rails db:migrate` anymore.
 
 ### Custom Domain (Optional)
 
